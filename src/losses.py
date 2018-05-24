@@ -69,8 +69,10 @@ def cc3D(win=[9, 9, 9], voxel_weights=None):
 
         # if(voxel_weights is not None):
         #	cc = cc * voxel_weights
-
-        return -1.0*tf.reduce_mean(cc)
+        mask = tf.greater(I, 2.0/(pow(2,16)-1.0))
+        mask = tf.cast(mask, tf.float32)
+        cc = cc*mask
+        return -1.0*tf.reduce_sum(cc)/tf.reduce_sum(mask)
 
     return loss
 
